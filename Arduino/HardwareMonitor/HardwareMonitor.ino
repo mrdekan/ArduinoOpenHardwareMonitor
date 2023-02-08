@@ -35,12 +35,13 @@ void loop()
 {
   if (Serial.available() > 0)
   {
-    receiveVal = Serial.readString();
+    receiveVal = Serial.readString();    
     if (receiveVal != "123") {
       lcd.setCursor(0, 0);
       lcd.print(receiveVal);
     }
     else {
+      //Answering or request
       Serial.print("s");
       lcd.clear();
       lcd.print("Connected");
