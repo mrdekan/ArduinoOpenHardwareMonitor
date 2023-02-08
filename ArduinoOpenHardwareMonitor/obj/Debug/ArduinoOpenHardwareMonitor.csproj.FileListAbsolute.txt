@@ -1,0 +1,10 @@
+F:\code\C#\ArduinoOpenHardwareMonitor\ArduinoOpenHardwareMonitor\bin\Debug\ArduinoOpenHardwareMonitor.exe.config
+F:\code\C#\ArduinoOpenHardwareMonitor\ArduinoOpenHardwareMonitor\bin\Debug\ArduinoOpenHardwareMonitor.exe
+F:\code\C#\ArduinoOpenHardwareMonitor\ArduinoOpenHardwareMonitor\bin\Debug\ArduinoOpenHardwareMonitor.pdb
+F:\code\C#\ArduinoOpenHardwareMonitor\ArduinoOpenHardwareMonitor\bin\Debug\OpenHardwareMonitorLib.dll
+F:\code\C#\ArduinoOpenHardwareMonitor\ArduinoOpenHardwareMonitor\obj\Debug\ArduinoOpenHardwareMonitor.csproj.AssemblyReference.cache
+F:\code\C#\ArduinoOpenHardwareMonitor\ArduinoOpenHardwareMonitor\obj\Debug\ArduinoOpenHardwareMonitor.csproj.SuggestedBindingRedirects.cache
+F:\code\C#\ArduinoOpenHardwareMonitor\ArduinoOpenHardwareMonitor\obj\Debug\ArduinoOpenHardwareMonitor.csproj.CoreCompileInputs.cache
+F:\code\C#\ArduinoOpenHardwareMonitor\ArduinoOpenHardwareMonitor\obj\Debug\ArduinoOpenHardwareMonitor.csproj.CopyComplete
+F:\code\C#\ArduinoOpenHardwareMonitor\ArduinoOpenHardwareMonitor\obj\Debug\ArduinoOpenHardwareMonitor.exe
+F:\code\C#\ArduinoOpenHardwareMonitor\ArduinoOpenHardwareMonitor\obj\Debug\ArduinoOpenHardwareMonitor.pdb

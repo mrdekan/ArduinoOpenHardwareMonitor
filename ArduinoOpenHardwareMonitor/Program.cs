@@ -69,10 +69,11 @@ namespace ArduinoOpenHardwareMonitor
             {
                 CPUEnabled = true,
                 GPUEnabled = true,
-                MainboardEnabled = true,
-                HDDEnabled = true
             };
             thisComputer.Open();
+
+            //Submitting a request for Arduino
+            //You can change the text in request here and in the arduino code
             _serialPort.Write("123");
 
             while (true)
@@ -128,6 +129,7 @@ namespace ArduinoOpenHardwareMonitor
             if (port != "COM1" && port.Length == 4 && port.StartsWith("COM") && Char.IsDigit(port[port.Length - 1]) && SerialPort.GetPortNames().Contains(port)) return true;
             return false;
         }
+        //Receiver for serial port
         private static void DataReceivedHandler(
                         object sender,
                         SerialDataReceivedEventArgs e)
