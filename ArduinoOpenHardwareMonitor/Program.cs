@@ -55,7 +55,7 @@ namespace ArduinoOpenHardwareMonitor
             Console.WriteLine("Connecting...");
             Task task = Save(port);
             PC = new mvd.ComputerInfo();
-            totalRAM = Math.Round(PC.TotalPhysicalMemory/1024/1024/1000.0,1);
+            totalRAM = Math.Round(PC.TotalPhysicalMemory/1073741824.0, 1); //1024^3 to get Gb from bytes
             //Console.WriteLine(PC.T)
             //Opening serial port
             _serialPort = new SerialPort();
