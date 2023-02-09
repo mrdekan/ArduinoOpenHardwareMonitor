@@ -6,6 +6,7 @@ using System.Threading;
 using OpenHardwareMonitor.Hardware;
 using System.Runtime.InteropServices;
 using System.IO;
+using mvd = Microsoft.VisualBasic.Devices;//OpenHardwareMonitor has the same reference
 
 namespace ArduinoOpenHardwareMonitor
 {
@@ -27,8 +28,9 @@ namespace ArduinoOpenHardwareMonitor
 
         private static SerialPort _serialPort;
         private static Computer thisComputer;
+        private static mvd.ComputerInfo PC; 
         private static bool connected = false;
-
+        private static double totalRAM = 0;
         //Page settings
         private static int page = 1; //You can change this value to change the start page
         private static int allPages = 3;
@@ -52,7 +54,9 @@ namespace ArduinoOpenHardwareMonitor
             else port = GetText();
             Console.WriteLine("Connecting...");
             Task task = Save(port);
-
+            PC = new mvd.ComputerInfo();
+            totalRAM = Math.Round(PC.TotalPhysicalMemory/1024/1024/1000.0,1);
+            //Console.WriteLine(PC.T)
             //Opening serial port
             _serialPort = new SerialPort();
             _serialPort.PortName = port;
@@ -157,8 +161,8 @@ namespace ArduinoOpenHardwareMonitor
             temp += tempsString();
             var performance = new System.Diagnostics.PerformanceCounter("Memory", "Available MBytes");
             var memory = performance.NextValue();
-            double ram = 15.9 - Math.Round(memory / 1000, 1);
-            temp += "RAM: " + ram.ToString() + "/15.9Gb";
+            double ram = totalRAM - Math.Round(memory / 1000, 1);
+            temp += "RAM: " + ram.ToString() + $"/{totalRAM}Gb";
             while (temp.Length < 40) temp += " ";
             temp += cpuUsage();
             while (temp.Length < 60) temp += " ";
