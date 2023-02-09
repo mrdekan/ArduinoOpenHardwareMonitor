@@ -14,7 +14,7 @@ void setup()
   attachInterrupt(0, btnIsr, FALLING);
   
   //Initialize serial port
-  Serial.begin(9600);
+  Serial.begin(38400);
   
   //Initialize display
   lcd.init();

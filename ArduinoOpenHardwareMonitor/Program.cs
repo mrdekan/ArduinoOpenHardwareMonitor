@@ -60,7 +60,7 @@ namespace ArduinoOpenHardwareMonitor
             //Opening serial port
             _serialPort = new SerialPort();
             _serialPort.PortName = port;
-            _serialPort.BaudRate = 9600;
+            _serialPort.BaudRate = 38400;
             _serialPort.Open();
 
             //Comment out next line to avoid hiding the window
@@ -101,7 +101,7 @@ namespace ArduinoOpenHardwareMonitor
                     {
                         _serialPort.Write(temp);
                         //Console.WriteLine(temp);
-                        Thread.Sleep(1200);
+                        Thread.Sleep(900);
                     }
                     catch
                     {
