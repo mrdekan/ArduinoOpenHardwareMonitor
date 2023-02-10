@@ -106,10 +106,10 @@ namespace ArduinoOpenHardwareMonitor
                     catch
                     {
                         Console.Clear();
-                        Console.WriteLine(string.Format("{0:HH:mm:ss tt}", DateTime.Now));
-                        Console.WriteLine("Something went wrong :(");
+                        Console.WriteLine("At "+string.Format("{0:HH:mm:ss tt}", DateTime.Now) + " something went wrong :(");
                         Console.WriteLine("Disconnected");
                         connected = false;
+                        Environment.Exit(0);
                     }
                 }
             }
