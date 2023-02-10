@@ -176,7 +176,7 @@ namespace ArduinoOpenHardwareMonitor
             double GPUusage = 0;
             foreach (var hardwareItem in thisComputer.Hardware)
             {
-                if (hardwareItem.HardwareType == HardwareType.GpuAti)
+                if (hardwareItem.HardwareType == HardwareType.GpuAti || hardwareItem.HardwareType == HardwareType.GpuNvidia)
                 {
                     hardwareItem.Update();
                     foreach (IHardware subHardware in hardwareItem.SubHardware)
@@ -238,7 +238,7 @@ namespace ArduinoOpenHardwareMonitor
                             if (sensor.Name == "CPU Package")
                                 CPUtemp = sensor.Value.Value;
                 }
-                else if (hardwareItem.HardwareType == HardwareType.GpuAti)
+                else if (hardwareItem.HardwareType == HardwareType.GpuAti || hardwareItem.HardwareType == HardwareType.GpuNvidia)
                 {
                     hardwareItem.Update();
                     foreach (IHardware subHardware in hardwareItem.SubHardware)
@@ -264,14 +264,13 @@ namespace ArduinoOpenHardwareMonitor
             string power = "0";
             foreach (var hardwareItem in thisComputer.Hardware)
             {
-                if (hardwareItem.HardwareType == HardwareType.GpuAti)
+                if (hardwareItem.HardwareType == HardwareType.GpuAti || hardwareItem.HardwareType == HardwareType.GpuNvidia)
                 {
                     hardwareItem.Update();
                     foreach (IHardware subHardware in hardwareItem.SubHardware)
                         subHardware.Update();
                     foreach (var sensor in hardwareItem.Sensors)
                     {
-                        //Console.WriteLine(sensor.Name + " " + sensor.SensorType + " " + sensor.Value.Value);
                         if (sensor.SensorType == SensorType.Load && sensor.Name == "GPU Core")
                             GPUusage = sensor.Value.Value;
                         else if (sensor.SensorType == SensorType.Clock)
@@ -295,7 +294,7 @@ namespace ArduinoOpenHardwareMonitor
             while (temp.Length < 20) temp += " ";
             temp += "Clocks: " + clockMemory + " " + clockCore;
             while (temp.Length < 40) temp += " ";
-            temp += "GPU temps: " + firstTemp + " " + secondTemp;
+            temp += "GPU temps: " + firstTemp + (secondTemp=="0"?" " + secondTemp:"");
             while (temp.Length < 60) temp += " ";
             temp += "Power: " + power + "W";
             while (temp.Length < 80) temp += " ";
