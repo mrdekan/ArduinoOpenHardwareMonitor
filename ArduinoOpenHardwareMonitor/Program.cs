@@ -28,7 +28,7 @@ namespace ArduinoOpenHardwareMonitor
 
         private static SerialPort _serialPort;
         private static Computer thisComputer;
-        private static mvd.ComputerInfo PC; 
+        private static mvd.ComputerInfo PC;
         private static bool connected = false;
         private static double totalRAM = 0;
         //Page settings
@@ -55,7 +55,7 @@ namespace ArduinoOpenHardwareMonitor
             Console.WriteLine("Connecting...");
             Task task = Save(port);
             PC = new mvd.ComputerInfo();
-            totalRAM = Math.Round(PC.TotalPhysicalMemory/1073741824.0, 1); //1024^3 to get Gb from bytes
+            totalRAM = Math.Round(PC.TotalPhysicalMemory / 1073741824.0, 1); //1024^3 to get Gb from bytes
             //Console.WriteLine(PC.T)
             //Opening serial port
             _serialPort = new SerialPort();
@@ -106,7 +106,7 @@ namespace ArduinoOpenHardwareMonitor
                     catch
                     {
                         Console.Clear();
-                        Console.WriteLine("At "+string.Format("{0:HH:mm:ss tt}", DateTime.Now) + " something went wrong :(");
+                        Console.WriteLine("At " + string.Format("{0:HH:mm:ss tt}", DateTime.Now) + " something went wrong :(");
                         Console.WriteLine("Disconnected");
                         connected = false;
                         Environment.Exit(0);
@@ -157,50 +157,8 @@ namespace ArduinoOpenHardwareMonitor
         }
         private static string mainPage()
         {
-            string temp = "";
-            temp += tempsString();
-            var performance = new System.Diagnostics.PerformanceCounter("Memory", "Available MBytes");
-            var memory = performance.NextValue();
-            double ram = totalRAM - Math.Round(memory / 1000, 1);
-            temp += "RAM: " + ram.ToString() + $"/{totalRAM}Gb";
-            while (temp.Length < 40) temp += " ";
-            temp += cpuUsage();
-            while (temp.Length < 60) temp += " ";
-            temp += gpuUsage();
-            while (temp.Length < 80) temp += " ";
-            return temp;
-        }
-        private static string gpuUsage()
-        {
-            string temp = "GPU load: ";
-            double GPUusage = 0;
-            foreach (var hardwareItem in thisComputer.Hardware)
-            {
-                if (hardwareItem.HardwareType == HardwareType.GpuAti || hardwareItem.HardwareType == HardwareType.GpuNvidia)
-                {
-                    hardwareItem.Update();
-                    foreach (IHardware subHardware in hardwareItem.SubHardware)
-                        subHardware.Update();
-                    foreach (var sensor in hardwareItem.Sensors)
-                    {
-
-                        if (sensor.SensorType == SensorType.Load)
-                        {
-
-                            if (sensor.Name == "GPU Core")
-                                GPUusage = sensor.Value.Value;
-                        }
-                    }
-                }
-            }
-            temp += GPUusage.ToString() + "%";
-            while (temp.Length < 20) temp += " ";
-            return temp;
-        }
-        private static string cpuUsage()
-        {
-            string temp = "CPU load: ";
-            double CPUusage = 0;
+            double CPUusage = 0, GPUusage = 0;
+            double CPUtemp = 0, GPUtemp = 0;
             foreach (var hardwareItem in thisComputer.Hardware)
             {
                 if (hardwareItem.HardwareType == HardwareType.CPU)
@@ -212,31 +170,14 @@ namespace ArduinoOpenHardwareMonitor
                     {
                         //Console.WriteLine(sensor.Name.ToString());
                         if (sensor.SensorType == SensorType.Load)
+                        {
                             if (sensor.Name == "CPU Total")
                                 CPUusage = Math.Round(sensor.Value.Value, 0);
-                    }
-                }
-            }
-            temp += CPUusage.ToString() + "%";
-            while (temp.Length < 20) temp += " ";
-            return temp;
-        }
-        private static string tempsString()
-        {
-            string temp;
-            float GPUtemp = 0;
-            float CPUtemp = 0;
-            foreach (var hardwareItem in thisComputer.Hardware)
-            {
-                if (hardwareItem.HardwareType == HardwareType.CPU)
-                {
-                    hardwareItem.Update();
-                    foreach (IHardware subHardware in hardwareItem.SubHardware)
-                        subHardware.Update();
-                    foreach (var sensor in hardwareItem.Sensors)
-                        if (sensor.SensorType == SensorType.Temperature)
+                        }
+                        else if (sensor.SensorType == SensorType.Temperature)
                             if (sensor.Name == "CPU Package")
                                 CPUtemp = sensor.Value.Value;
+                    }
                 }
                 else if (hardwareItem.HardwareType == HardwareType.GpuAti || hardwareItem.HardwareType == HardwareType.GpuNvidia)
                 {
@@ -244,13 +185,30 @@ namespace ArduinoOpenHardwareMonitor
                     foreach (IHardware subHardware in hardwareItem.SubHardware)
                         subHardware.Update();
                     foreach (var sensor in hardwareItem.Sensors)
-                        if (sensor.SensorType == SensorType.Temperature)
+                    {
+                        if (sensor.SensorType == SensorType.Load)
+                        {
+                            if (sensor.Name == "GPU Core")
+                                GPUusage = sensor.Value.Value;
+                        }
+                        else if (sensor.SensorType == SensorType.Temperature)
                             if (sensor.Name == "GPU Core")
                                 GPUtemp = sensor.Value.Value;
+                    }
                 }
             }
-            temp = "CPU&GPU temp: " + CPUtemp.ToString() + " " + GPUtemp.ToString();
+            string temp = "";
+            var performance = new System.Diagnostics.PerformanceCounter("Memory", "Available MBytes");
+            var memory = performance.NextValue();
+            double ram = totalRAM - Math.Round(memory / 1000, 1);
+            temp += "CPU&GPU temp: " + CPUtemp.ToString() + " " + GPUtemp.ToString();
             while (temp.Length < 20) temp += " ";
+            temp += "RAM: " + ram.ToString() + $"/{totalRAM}Gb";
+            while (temp.Length < 40) temp += " ";
+            temp += "CPU load: " + CPUusage.ToString() + "%";
+            while (temp.Length < 60) temp += " ";
+            temp += "GPU load: " + GPUusage.ToString() + "%";
+            while (temp.Length < 80) temp += " ";
             return temp;
         }
         private static string gpuPage()
@@ -294,7 +252,7 @@ namespace ArduinoOpenHardwareMonitor
             while (temp.Length < 20) temp += " ";
             temp += "Clocks: " + clockMemory + " " + clockCore;
             while (temp.Length < 40) temp += " ";
-            temp += "GPU temps: " + firstTemp + (secondTemp=="0"?" " + secondTemp:"");
+            temp += "GPU temps: " + firstTemp + (secondTemp == "0" ? " " + secondTemp : "");
             while (temp.Length < 60) temp += " ";
             temp += "Power: " + power + "W";
             while (temp.Length < 80) temp += " ";
