@@ -7,6 +7,7 @@ using OpenHardwareMonitor.Hardware;
 using System.Runtime.InteropServices;
 using System.IO;
 using mvd = Microsoft.VisualBasic.Devices;//OpenHardwareMonitor has the same reference
+using System.Text;
 
 namespace ArduinoOpenHardwareMonitor
 {
@@ -194,23 +195,24 @@ namespace ArduinoOpenHardwareMonitor
                     }
                 }
             }
-            string temp = "";
+            StringBuilder temp = new StringBuilder();
             var performance = new System.Diagnostics.PerformanceCounter("Memory", "Available MBytes");
             var memory = performance.NextValue();
             double ram = totalRAM - Math.Round(memory / 1000, 1);
-            temp += "CPU&GPU temp: " + CPUtemp.ToString() + " " + GPUtemp.ToString();
-            while (temp.Length < 20) temp += " ";
-            temp += "RAM: " + ram.ToString() + $"/{totalRAM}Gb";
-            while (temp.Length < 40) temp += " ";
-            temp += "CPU load: " + CPUusage.ToString() + "%";
-            while (temp.Length < 60) temp += " ";
-            temp += "GPU load: " + GPUusage.ToString() + "%";
-            while (temp.Length < 80) temp += " ";
-            return temp;
+            temp.Append("CPU&GPU temp: " + CPUtemp.ToString() + " " + GPUtemp.ToString());
+            while (temp.Length < 20) temp.Append(" ");
+            temp.Append("RAM: " + ram.ToString() + $"/{totalRAM}Gb");
+            while (temp.Length < 40) temp.Append(" ");
+			temp.Append("CPU load: " + CPUusage.ToString() + "%");
+            while (temp.Length < 60) temp.Append(" ");
+			temp.Append("GPU load: " + GPUusage.ToString() + "%");
+            while (temp.Length < 80) temp.Append(" ");
+			return temp.ToString();
         }
         private static string gpuPage()
         {
-            string temp = "GPU load: ";
+			StringBuilder temp = new StringBuilder();
+			temp.Append("GPU load: ");
             double GPUusage = 0;
             string clockCore = "0";
             string clockMemory = "0";
@@ -245,20 +247,20 @@ namespace ArduinoOpenHardwareMonitor
                     }
                 }
             }
-            temp += GPUusage.ToString() + "%";
-            while (temp.Length < 20) temp += " ";
-            temp += "Clocks: " + clockMemory + " " + clockCore;
-            while (temp.Length < 40) temp += " ";
-            temp += "GPU temps: " + firstTemp + (secondTemp == "0" ? " " + secondTemp : "");
-            while (temp.Length < 60) temp += " ";
-            temp += "Power: " + power + "W";
-            while (temp.Length < 80) temp += " ";
-            return temp;
+            temp.Append(GPUusage.ToString() + "%");
+            while (temp.Length < 20) temp.Append(" ");
+			temp.Append("Clocks: " + clockMemory + " " + clockCore);
+            while (temp.Length < 40) temp.Append(" ");
+			temp.Append("GPU temps: " + firstTemp + (secondTemp == "0" ? " " + secondTemp : ""));
+            while (temp.Length < 60) temp.Append(" ");
+			temp.Append("Power: " + power + "W");
+            while (temp.Length < 80) temp.Append(" ");
+			return temp.ToString();
         }
         private static string cpuPage()
         {
-            string temp = "";
-            string CPUpower = "0";
+			StringBuilder temp = new StringBuilder();
+			string CPUpower = "0";
             string CPUtemp = "0";
             string CPUload = "0";
             string CPUclock = "0";
@@ -278,15 +280,15 @@ namespace ArduinoOpenHardwareMonitor
                     }
                 }
             }
-            temp += "CPU load: " + CPUload + "%";
-            while (temp.Length < 20) temp += " ";
-            temp += "CPU clock: " + CPUclock + "GHz";
-            while (temp.Length < 40) temp += " ";
-            temp += "CPU temp: " + CPUtemp;
-            while (temp.Length < 60) temp += " ";
-            temp += "CPU power: " + CPUpower + "W";
-            while (temp.Length < 80) temp += " ";
-            return temp;
+            temp.Append("CPU load: " + CPUload + "%");
+            while (temp.Length < 20) temp.Append(" ");
+			temp.Append("CPU clock: " + CPUclock + "GHz");
+            while (temp.Length < 40) temp.Append(" ");
+			temp.Append("CPU temp: " + CPUtemp);
+            while (temp.Length < 60) temp.Append(" ");
+			temp.Append("CPU power: " + CPUpower + "W");
+            while (temp.Length < 80) temp.Append(" ");
+			return temp.ToString();
         }
     }
 }
