@@ -56,7 +56,6 @@ namespace ArduinoOpenHardwareMonitor
             Task task = Save(port);
             PC = new mvd.ComputerInfo();
             totalRAM = Math.Round(PC.TotalPhysicalMemory / 1073741824.0, 1); //1024^3 to get Gb from bytes
-            //Console.WriteLine(PC.T)
             //Opening serial port
             _serialPort = new SerialPort();
             _serialPort.PortName = port;
@@ -64,7 +63,7 @@ namespace ArduinoOpenHardwareMonitor
             _serialPort.Open();
 
             //Comment out next line to avoid hiding the window
-            //ShowWindow(GetConsoleWindow(), 0);
+            ShowWindow(GetConsoleWindow(), 0);
 
 
             _serialPort.DataReceived += new SerialDataReceivedEventHandler
@@ -100,7 +99,6 @@ namespace ArduinoOpenHardwareMonitor
                     try
                     {
                         _serialPort.Write(temp);
-                        //Console.WriteLine(temp);
                         Thread.Sleep(1200);
                     }
                     catch
@@ -168,7 +166,6 @@ namespace ArduinoOpenHardwareMonitor
                         subHardware.Update();
                     foreach (var sensor in hardwareItem.Sensors)
                     {
-                        //Console.WriteLine(sensor.Name.ToString());
                         if (sensor.SensorType == SensorType.Load)
                         {
                             if (sensor.Name == "CPU Total")
@@ -270,12 +267,10 @@ namespace ArduinoOpenHardwareMonitor
                 if (hardwareItem.HardwareType == HardwareType.CPU)
                 {
                     hardwareItem.Update();
-                    //Console.WriteLine(hardwareItem.Name);
                     foreach (IHardware subHardware in hardwareItem.SubHardware)
                         subHardware.Update();
                     foreach (var sensor in hardwareItem.Sensors)
                     {
-                        //Console.WriteLine(sensor.Name + " " + sensor.SensorType + " " + sensor.Value.Value);
                         if (sensor.SensorType == SensorType.Power && sensor.Name == "CPU Package") CPUpower = Math.Round(sensor.Value.Value, 3).ToString();
                         else if (sensor.SensorType == SensorType.Clock && sensor.Name == "CPU Core #1") CPUclock = Math.Round(sensor.Value.Value / 1000, 2).ToString();
                         else if (sensor.SensorType == SensorType.Temperature && sensor.Name == "CPU Package") CPUtemp = sensor.Value.Value.ToString();
