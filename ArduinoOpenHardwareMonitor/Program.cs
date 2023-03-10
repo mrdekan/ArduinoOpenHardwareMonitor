@@ -212,8 +212,7 @@ namespace ArduinoOpenHardwareMonitor
         private static string gpuPage()
         {
 			StringBuilder temp = new StringBuilder();
-			temp.Append("GPU load: ");
-            double GPUusage = 0;
+            string GPUusage = "0";
             string clockCore = "0";
             string clockMemory = "0";
             string firstTemp = "0";
@@ -229,7 +228,7 @@ namespace ArduinoOpenHardwareMonitor
                     foreach (var sensor in hardwareItem.Sensors)
                     {
                         if (sensor.SensorType == SensorType.Load && sensor.Name == "GPU Core")
-                            GPUusage = sensor.Value.Value;
+                            GPUusage = sensor.Value.Value.ToString();
                         else if (sensor.SensorType == SensorType.Clock)
                         {
                             if (sensor.Name == "GPU Core") clockCore = sensor.Value.Value.ToString();
@@ -247,7 +246,7 @@ namespace ArduinoOpenHardwareMonitor
                     }
                 }
             }
-            temp.Append(GPUusage.ToString() + "%");
+			temp.Append("GPU load: "+GPUusage + "%");
             while (temp.Length < 20) temp.Append(" ");
 			temp.Append("Clocks: " + clockMemory + " " + clockCore);
             while (temp.Length < 40) temp.Append(" ");
