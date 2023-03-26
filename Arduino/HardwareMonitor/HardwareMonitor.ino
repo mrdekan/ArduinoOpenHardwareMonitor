@@ -20,7 +20,7 @@ void setup()
   lcd.init();
   lcd.backlight();
   lcd.noAutoscroll();
-  lcd.print("Connecting...");
+  lcd.print("Waiting for connection...");
 }
 //On button pressed
 void btnIsr() {
